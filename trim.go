@@ -6,6 +6,7 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
+// Trim cuts a slice of numbers by the proportions in q
 func Trim[T number](slice []T, q quantiles) []T {
 	slices.Sort(slice)
 	length := len(slice)
