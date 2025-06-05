@@ -3,6 +3,8 @@ package trim
 import (
 	"slices"
 
+	"math"
+
 	"golang.org/x/exp/constraints"
 )
 
@@ -10,7 +12,20 @@ import (
 func Trim[T number](slice []T, q quantiles) []T {
 	slices.Sort(slice)
 	length := len(slice)
+
+	// some conditions that return empty slice
+	// empty slice will force float64 NaN returns for TrimmedMean
 	if length == 0 {
+		return []T{}
+	}
+
+	for _, n := range q.values() {
+		if n < 0 || n > 1 {
+			return []T{}
+		}
+	}
+
+	if q.Low+q.High > 1 {
 		return []T{}
 	}
 
@@ -34,13 +49,17 @@ type quantiles struct {
 	High float64 // default will be Low first, then 0
 }
 
+func (q quantiles) values() []float64 {
+	return []float64{q.Low, q.High}
+}
+
 type number interface {
 	constraints.Integer | constraints.Float
 }
 
 func mean[T number](slice []T) float64 {
 	if len(slice) == 0 {
-		return 0
+		return math.NaN()
 	}
 	var sum float64
 
