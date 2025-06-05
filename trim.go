@@ -25,7 +25,7 @@ func Trim[T number](slice []T, q quantiles) []T {
 
 }
 
-func TrimmedMean[T number](slice []T, q quantiles) T {
+func TrimmedMean[T number](slice []T, q quantiles) float64 {
 	return mean(Trim(slice, q))
 }
 
@@ -38,13 +38,14 @@ type number interface {
 	constraints.Integer | constraints.Float
 }
 
-func mean[T number](slice []T) T {
-	sum := slice[0]
-	if len(slice) == 1 {
-		return sum
+func mean[T number](slice []T) float64 {
+	if len(slice) == 0 {
+		return 0
 	}
-	for i := 1; i < len(slice); i++ {
-		sum += slice[i]
+	var sum float64
+
+	for _, n := range slice {
+		sum += float64(n)
 	}
-	return sum / T(len(slice))
+	return sum / float64(len(slice))
 }
