@@ -9,9 +9,22 @@ import (
 )
 
 // Trim cuts a sorted slice of numbers by the proportions in q
-func Trim[T number](slice []T, q quantiles) []T {
+// First argument of q is lower quantile, second is upper.  Beyond two get ignored.
+// If zero quantiles are passed no trimming occurs.
+// If one quantile is passed both ends are trimmed by that quantile.
+func Trim[T number](slice []T, quants ...float64) []T {
 	slices.Sort(slice)
 	length := len(slice)
+
+	q := quantiles{}
+	switch n := len(quants); n {
+	case 0: // skip; no need to update q
+	case 1:
+		q.Low = quants[0]
+	default:
+		q.Low = quants[0]
+		q.High = quants[1]
+	}
 
 	// some conditions that return empty slice
 	// empty slice will force float64 NaN returns for TrimmedMean
@@ -42,8 +55,8 @@ func Trim[T number](slice []T, q quantiles) []T {
 
 }
 
-func TrimmedMean[T number](slice []T, q quantiles) float64 {
-	return mean(Trim(slice, q))
+func TrimmedMean[T number](slice []T, q ...float64) float64 {
+	return mean(Trim(slice, q...))
 }
 
 type quantiles struct {

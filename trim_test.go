@@ -14,17 +14,17 @@ var testFloat = []float64{-25.1, 56.9, 55.3, 56.9, 0, -1, 10.43, 1.112, 1.112, 5
 
 func TestTrim(t *testing.T) {
 	// initialize full, full unequal, half, and empty quantiles structs
-	quants := make([]quantiles, 4)
-	quants[0] = quantiles{0.1, 0.1}
-	quants[1] = quantiles{0.25, 0.1}
-	quants[2].Low = 0.1
+	quants := make([][]float64, 4)
+	quants[0] = []float64{0.1, 0.1}
+	quants[1] = []float64{0.25, 0.1}
+	quants[2] = []float64{0.1}
 	// q[3] remains empty (zero values)
 
 	resInt := make([][]int, 4)
 	resFloat := make([][]float64, 4)
 	for i, q := range quants {
-		resInt[i] = Trim(testInt, q)
-		resFloat[i] = Trim(testFloat, q)
+		resInt[i] = Trim(testInt, q...)
+		resFloat[i] = Trim(testFloat, q...)
 		slices.Sort(resInt[i])
 		slices.Sort(resFloat[i])
 	}
@@ -64,17 +64,17 @@ func TestTrimmedMean(t *testing.T) {
 	precision := 0.00000001
 
 	// initialize full, full unequal, half, and empty quantiles structs
-	quants := make([]quantiles, 4)
-	quants[0] = quantiles{0.1, 0.1}
-	quants[1] = quantiles{0.25, 0.1}
-	quants[2].Low = 0.1
+	quants := make([][]float64, 4)
+	quants[0] = []float64{0.1, 0.1}
+	quants[1] = []float64{0.25, 0.1}
+	quants[2] = []float64{0.1}
 	// q[3] remains empty (zero values)
 
 	resInt := make([]float64, 4)
 	resFloat := make([]float64, 4)
 	for i, q := range quants {
-		resInt[i] = TrimmedMean(testInt, q)
-		resFloat[i] = TrimmedMean(testFloat, q)
+		resInt[i] = TrimmedMean(testInt, q...)
+		resFloat[i] = TrimmedMean(testFloat, q...)
 	}
 
 	exInt := []float64{14.4444444444, 16.375, 14.4444444444, 14.6363636364}
