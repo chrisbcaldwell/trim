@@ -1,4 +1,4 @@
-module trim
+module github.com/chrisbcaldwell/trim
 
 go 1.23.2
 
