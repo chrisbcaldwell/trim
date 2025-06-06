@@ -48,13 +48,13 @@ func TestTrim(t *testing.T) {
 
 	for i, r := range resInt {
 		if !slices.Equal(exInt[i], r) {
-			t.Errorf("Integer slice: Trim(%v) = %v; expected: %v", testInt[i], r, exInt[i])
+			t.Errorf("Integer slice: Trim(%v) = %v; expected: %v", testInt, r, exInt[i])
 		}
 	}
 
 	for i, r := range resFloat {
 		if !slices.Equal(exFloat[i], r) {
-			t.Errorf("Float slice: Trim(%v) = %v; expected: %v", testFloat[i], r, exFloat[i])
+			t.Errorf("Float slice: Trim(%v) = %v; expected: %v", testFloat, r, exFloat[i])
 		}
 	}
 

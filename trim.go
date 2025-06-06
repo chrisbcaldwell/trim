@@ -34,9 +34,11 @@ func Trim[T number](slice []T, q quantiles) []T {
 		q.High = q.Low
 	}
 
-	lowI := int(q.Low * float64(length))
-	highI := length - int(q.High*float64(length)) - 1
-	return slice[lowI:highI]
+	lowTrim := int(q.Low * float64(length))
+	lowIndex := lowTrim
+	highTrim := int(q.High * float64(length))
+	highIndex := length - highTrim
+	return slice[lowIndex:highIndex]
 
 }
 
